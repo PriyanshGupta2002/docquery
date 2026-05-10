@@ -29,7 +29,10 @@ import { toast } from "sonner";
 
 const Upload = () => {
   const [progress, setProgress] = useState(0);
-  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [pdfFileInfo, setPdfFileInfo] = useState<{
+    pdfUrl: string;
+    name: string;
+  } | null>(null);
   const [uploading, setUploading] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
 
@@ -97,7 +100,11 @@ const Upload = () => {
         abortSignal: abortController.signal,
       });
 
-      setPdfUrl(uploadResponse.url || null);
+      setPdfFileInfo((prev) => ({
+        ...prev,
+        name: uploadResponse.name || "",
+        pdfUrl: uploadResponse.url || "",
+      }));
     } catch (error) {
       if (error instanceof ImageKitAbortError) {
         console.error("Upload aborted:", error.reason);
@@ -116,11 +123,14 @@ const Upload = () => {
   }, []);
 
   const handleFinalUpload = async () => {
-    if (!pdfUrl || typeof pdfUrl !== "string") return;
+    if (!pdfFileInfo?.pdfUrl || typeof pdfFileInfo.pdfUrl !== "string") return;
 
     try {
-      await uploadPdf(pdfUrl);
-      setPdfUrl("");
+      await uploadPdf({
+        doc_url: pdfFileInfo.pdfUrl,
+        name: pdfFileInfo.name,
+      });
+      setPdfFileInfo(null);
       toast.success("Document uploaded successfully. Processing has started.");
     } catch (error) {
       console.error(error);
@@ -128,7 +138,7 @@ const Upload = () => {
   };
 
   const removePdf = () => {
-    setPdfUrl(null);
+    setPdfFileInfo(null);
     setProgress(0);
   };
 
@@ -143,7 +153,7 @@ const Upload = () => {
   return (
     <>
       <div className="mx-auto w-full max-w-xl">
-        {!pdfUrl && !uploading && (
+        {!pdfFileInfo?.pdfUrl && !uploading && (
           <Card
             {...getRootProps()}
             className={`border-dashed cursor-pointer transition-all duration-200 p-10 rounded-3xl bg-muted/30 hover:bg-muted/50 ${
@@ -189,7 +199,7 @@ const Upload = () => {
           </Card>
         )}
 
-        {pdfUrl && !uploading && (
+        {pdfFileInfo?.pdfUrl && !uploading && (
           <Card className="p-5 rounded-3xl">
             <div className="flex items-center justify-between gap-4">
               <div
@@ -247,9 +257,9 @@ const Upload = () => {
           <DialogHeader>
             <DialogTitle>View Pdf</DialogTitle>
           </DialogHeader>
-          {pdfUrl && (
+          {pdfFileInfo?.pdfUrl && (
             <div className="w-full">
-              <iframe src={pdfUrl} className="w-full h-full" />
+              <iframe src={pdfFileInfo.pdfUrl} className="w-full h-full" />
             </div>
           )}
         </DialogContent>

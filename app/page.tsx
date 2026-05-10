@@ -1,10 +1,11 @@
+import DocumentTable from "@/components/DocumentTable";
 import Upload from "@/components/Upload";
-import React from "react";
 
-const page = () => {
+const page = async () => {
   return (
-    <div className="p-4 mt-3 max-w-5xl mx-auto w-full">
+    <div className="p-4 mt-3 space-y-3.5 max-w-5xl mx-auto w-full">
       <Upload />
+      <DocumentTable />
     </div>
   );
 };

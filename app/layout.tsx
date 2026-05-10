@@ -29,8 +29,8 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <Toaster />
       <body className="min-h-full flex flex-col">
+        <Toaster />
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
