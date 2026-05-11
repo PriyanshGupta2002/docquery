@@ -1,13 +1,21 @@
-import DocumentTable from "@/components/DocumentTable";
-import Upload from "@/components/Upload";
+import { Navbar } from "@/components/landing/navbar";
+import { HeroSection } from "@/components/landing/hero-section";
+import { FeaturesSection } from "@/components/landing/features-section";
+import { HowItWorks } from "@/components/landing/how-it-works";
+import { TestimonialsSection } from "@/components/landing/testimonials-section";
+import { CTASection } from "@/components/landing/cta-section";
+import { Footer } from "@/components/landing/footer";
 
-const page = async () => {
+export default function HomePage() {
   return (
-    <div className="p-4 mt-3 space-y-3.5 max-w-5xl mx-auto w-full">
-      <Upload />
-      <DocumentTable />
+    <div className="relative">
+      <Navbar />
+      <HeroSection />
+      <FeaturesSection />
+      <HowItWorks />
+      <TestimonialsSection />
+      <CTASection />
+      <Footer />
     </div>
   );
-};
-
-export default page;
+}

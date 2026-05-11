@@ -37,7 +37,7 @@ const SignIn = () => {
   const onSubmit = async (data: SignInFormValues) => {
     console.log("Sign in data:", data);
     await loginUser(data);
-    router.push("/");
+    router.push("/product/docquery");
 
     // TODO: replace this with the actual login request
   };
