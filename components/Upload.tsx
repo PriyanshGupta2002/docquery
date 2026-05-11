@@ -26,17 +26,21 @@ import { Card } from "@/components/ui/card";
 
 import { useUploadPdf } from "@/services/upload/upload.service";
 import { toast } from "sonner";
+import { useDeleteImageFromImageKit } from "@/services/document/document.query";
+import { file } from "zod";
 
 const Upload = () => {
   const [progress, setProgress] = useState(0);
   const [pdfFileInfo, setPdfFileInfo] = useState<{
     pdfUrl: string;
     name: string;
+    fileId: string;
   } | null>(null);
   const [uploading, setUploading] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
 
   const { mutateAsync: uploadPdf, isPending } = useUploadPdf();
+  const { mutateAsync: deleteUploadedPdf } = useDeleteImageFromImageKit();
 
   const authenticator = async () => {
     try {
@@ -104,6 +108,7 @@ const Upload = () => {
         ...prev,
         name: uploadResponse.name || "",
         pdfUrl: uploadResponse.url || "",
+        fileId: uploadResponse?.fileId || "",
       }));
     } catch (error) {
       if (error instanceof ImageKitAbortError) {
@@ -137,9 +142,11 @@ const Upload = () => {
     }
   };
 
-  const removePdf = () => {
+  const removePdf = async () => {
+    await deleteUploadedPdf(pdfFileInfo?.fileId as string);
     setPdfFileInfo(null);
     setProgress(0);
+    toast.success("File deleted successfully");
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
