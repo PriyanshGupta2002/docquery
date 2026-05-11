@@ -273,16 +273,6 @@ The real engineering happens in:
 
 ---
 
-# 📸 Demo
-
-_Add demo GIF/video here_
-
-```md
-![Demo](./public/demo.gif)
-```
-
----
-
 # ⭐ Future Improvements
 
 - Source highlighting in PDFs
