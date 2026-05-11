@@ -1,6 +1,6 @@
 export type doc = {
   id: string;
-  docUrl: string;
+  doc_url: string;
   status: string;
   name: string;
 };

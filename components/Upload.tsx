@@ -28,6 +28,7 @@ import { useUploadPdf } from "@/services/upload/upload.service";
 import { toast } from "sonner";
 import { useDeleteImageFromImageKit } from "@/services/document/document.query";
 import { file } from "zod";
+import { PdfPreviewModal } from "./shared/pdf-preview-modal";
 
 const Upload = () => {
   const [progress, setProgress] = useState(0);
@@ -259,18 +260,12 @@ const Upload = () => {
         )}
       </div>
 
-      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-        <DialogContent className="sm:max-w-5xl h-1/2">
-          <DialogHeader>
-            <DialogTitle>View Pdf</DialogTitle>
-          </DialogHeader>
-          {pdfFileInfo?.pdfUrl && (
-            <div className="w-full">
-              <iframe src={pdfFileInfo.pdfUrl} className="w-full h-full" />
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      <PdfPreviewModal
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        pdfUrl={pdfFileInfo?.pdfUrl || ""}
+        title={pdfFileInfo?.name}
+      />
     </>
   );
 };

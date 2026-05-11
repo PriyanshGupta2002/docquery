@@ -36,7 +36,7 @@ export const DocumentTable = () => {
 
   return (
     <div className="space-y-3">
-      <Card className="relative overflow-hidden border bg-gradient-to-r from-muted/40 to-muted/10 p-6 shadow-sm">
+      {/* <Card className="relative overflow-hidden border bg-gradient-to-r from-muted/40 to-muted/10 p-6 shadow-sm">
         <div className="absolute inset-0 bg-grid-white/[0.02]" />
 
         <div className="relative flex items-start gap-4">
@@ -60,7 +60,7 @@ export const DocumentTable = () => {
             </div>
           </div>
         </div>
-      </Card>
+      </Card> */}
       {isLoading && <h2>Loading...</h2>}
 
       {!isLoading && (

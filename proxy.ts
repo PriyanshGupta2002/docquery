@@ -7,23 +7,16 @@ const PUBLIC_ROUTES = ["/", "/sign-in", "/sign-up"];
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check auth token from cookies
   const accessToken = request.cookies.get("accessToken")?.value;
 
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
 
-  /*
-    If user is NOT logged in
-    and trying to access protected route
-  */
+  // Redirect unauthenticated users
   if (!accessToken && !isPublicRoute) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
-  /*
-    If user IS logged in
-    and trying to access auth pages
-  */
+  // Redirect authenticated users away from auth pages
   if (accessToken && (pathname === "/sign-in" || pathname === "/sign-up")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
@@ -34,13 +27,13 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-      Match all routes except:
-      - api
-      - _next
-      - static files
-      - images
+      Exclude:
+      - api routes
+      - next static files
+      - next image optimization files
       - favicon
+      - all public files (png, jpg, svg, gif, etc)
     */
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
   ],
 };
